@@ -120,12 +120,19 @@ public class Statistic extends Alphabet {
         return H1;
     }
 
-//    public void calculateH2(Map<String, Integer> map, int n) {
-//        double H2 = 0.;
-//        for (Map.Entry<String, Integer> pair : map.entrySet()) {
-//            H2 -= ;
-//        }
-//    }
+    public double calculateH2(Map<String, Integer> map, int n) {
+        double H2 = 0.;
+        for (Map.Entry<String, Integer> pair : map.entrySet()) {
+            double p = ( 1. * pair.getValue() )/ n;
+            if (p != 0) {
+                H2 -= p * (Math.log(p) / Math.log(2));
+            }
+//            H2 = H2 - (p * (Math.log(p) / Math.log(2)));
+        }
+//        System.out.println("h2: " + H2);
+        H2 /= 2;
+        return H2;
+    }
 
     public void print() {
         System.out.println(textWithSpaces);
@@ -142,24 +149,88 @@ public class Statistic extends Alphabet {
         sum(bigramsWithSpacesNotCrossing);
         sum(bigramsWithSpacesWithCrossing);
         System.out.println("********************************");
-        System.out.println(calculateH1());
+        System.out.println("H1 = " + calculateH1());
+        System.out.println(calculateH2(bigramsWithoutSpacesNotCrossing, 13855));
+        System.out.println(calculateH2(bigramsWithoutSpacesWithCrossing, 6927));
+        System.out.println(calculateH2(bigramsWithSpacesNotCrossing, 14086));
+        System.out.println(calculateH2(bigramsWithSpacesWithCrossing, 7043));
     }
 
-    public void printMap(Map<String, Integer> map) {
-        for (char c : base ){
-            System.out.print(c + "  ");
-        }
-        for (char c1 : base) {
-            System.out.println(c1);
-            for (char c2 : base) {
-//                System.out.print(c2 + " ");
+    public void printMap(String name, Map<String, Integer> map, boolean space) {
+        System.out.println(name);
+        System.out.println(map);
+        System.out.print("   ");
+        if (!space) {
+            for (char c : base) {
+                System.out.print(c + "   ");
+            }
+            System.out.println();
+            for (char c1 : base) {
+                System.out.print(c1 + "  ");
+                for (char c2 : base) {
+                    StringBuilder temp = new StringBuilder();
+                    temp.append(c1);
+                    temp.append(c2);
+                    int t = map.get(temp.toString());
+                    if (t < 10) {
+                        System.out.print(t + "   ");
+                    } else if (t < 100) {
+                        System.out.print(t + "  ");
+                    } else {
+                        System.out.print(t + " ");
+                    }
+//                System.out.print(map.get(temp.toString()) + " ");
+                }
+                System.out.println();
+            }
+        } else {
+            for (char c : base) {
+                System.out.print(c + "   ");
+            }
+            System.out.print("' '");
+            System.out.println();
+            for (char c1 : base) {
+                System.out.print(c1 + "  ");
+                for (char c2 : base) {
+                    StringBuilder temp = new StringBuilder();
+                    temp.append(c1);
+                    temp.append(c2);
+                    int t = map.get(temp.toString());
+                    if (t < 10) {
+                        System.out.print(t + "   ");
+                    } else if (t < 100) {
+                        System.out.print(t + "  ");
+                    } else {
+                        System.out.print(t + " ");
+                    }
+//                System.out.print(map.get(temp.toString()) + " ");
+                }
                 StringBuilder temp = new StringBuilder();
                 temp.append(c1);
-                temp.append(c2);
-                System.out.print(map.get(temp.toString()) + " ");
+                temp.append(" ");
+                System.out.print(map.get(temp.toString()));
+                System.out.println();
+            }
+            System.out.print("' '");
+            for (char c : base) {
+                StringBuilder temp = new StringBuilder();
+                temp.append(" ");
+                temp.append(c);
+                int t = map.get(temp.toString());
+                if (t < 10) {
+                    System.out.print(t + "   ");
+                } else if (t < 100) {
+                    System.out.print(t + "  ");
+                } else {
+                    System.out.print(t + " ");
+                }
             }
             System.out.println();
         }
+    }
+
+    public int getValue(Map<String, Integer> map, String s) {
+        return map.get(s);
     }
 
     public void printMapToFile(String fileName, Map<String, Integer> map) {
@@ -188,7 +259,10 @@ public class Statistic extends Alphabet {
     public static void main(String[] args) {
         Statistic statistic = new Statistic("text1.txt");
         statistic.print();
-        statistic.printMap(statistic.bigramsWithoutSpacesWithCrossing);
+        statistic.printMap("bigramsWithoutSpacesWithCrossing", statistic.bigramsWithoutSpacesWithCrossing, false);
+        statistic.printMap("bigramsWithoutSpacesNotCrossing", statistic.bigramsWithoutSpacesNotCrossing, false);
+        statistic.printMap("bigramsWithSpacesWithCrossing", statistic.bigramsWithSpacesWithCrossing, true);
+        statistic.printMap("bigramsWithSpacesNotCrossing", statistic.bigramsWithSpacesNotCrossing, true);
 //        statistic.printMapToFile("bigramsWithoutSpacesWithCrossing.txt", statistic.bigramsWithoutSpacesWithCrossing);
     }
 
