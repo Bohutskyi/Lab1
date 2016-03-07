@@ -159,6 +159,8 @@ public class Statistic extends Alphabet {
     public void printMap(String name, Map<String, Integer> map, boolean space) {
         System.out.println(name);
         System.out.println(map);
+        System.out.println("sum = " + sum(map));
+        int sum = sum(map);
         System.out.print("   ");
         if (!space) {
             for (char c : base) {
@@ -171,6 +173,7 @@ public class Statistic extends Alphabet {
                     StringBuilder temp = new StringBuilder();
                     temp.append(c1);
                     temp.append(c2);
+//                    double t = 1. *  map.get(temp.toString());
                     int t = map.get(temp.toString());
                     if (t < 10) {
                         System.out.print(t + "   ");
@@ -248,12 +251,13 @@ public class Statistic extends Alphabet {
         }
     }
 
-    public static void sum(Map<String, Integer> map) {
+    public static int sum(Map<String, Integer> map) {
         int s = 0;
         for (Map.Entry<String, Integer> pair : map.entrySet()) {
             s += pair.getValue();
         }
-        System.out.println("s = " + s);
+        return s;
+//        System.out.println("s = " + s);
     }
 
     public static void main(String[] args) {

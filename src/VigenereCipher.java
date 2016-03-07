@@ -391,7 +391,7 @@ public class VigenereCipher {
         VigenereCipher vigenereCipher = new VigenereCipher();
         vigenereCipher.setCipherText("text.txt", false);
 //        vigenereCipher.print();
-//        vigenereCipher.decryption(14);
+        vigenereCipher.decryption(14);
 //        vigenereCipher.d();
         vigenereCipher.guessingKey(14);
     }

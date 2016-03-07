@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +34,8 @@ public class Index extends Alphabet {
         for (char c : base) {
             s += (frequencySymbolsMap.get(c) * (frequencySymbolsMap.get(c) - 1.));
         }
-        s = s / (n * (n - 1));
+        int n1 = text.length();
+        s = s / (n1 * (n1 - 1));
         return s;
     }
 
@@ -57,5 +62,27 @@ public class Index extends Alphabet {
     @Override
     public String toString() {
         return text;
+    }
+
+    public static void main(String[] args) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("text3.txt"));
+            String temp;
+            StringBuilder result = new StringBuilder();
+            while ((temp = reader.readLine()) != null) {
+                result.append(temp);
+            }
+            Index index = new Index(result.toString());
+            reader.close();
+//            System.out.println(index.getFrequencySymbolsMap());
+//            index.getFrequency();
+            System.out.println(index.calculateI());
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
